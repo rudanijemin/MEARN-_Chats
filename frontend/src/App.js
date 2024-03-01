@@ -6,8 +6,10 @@ import HomePages from './pages/HomePages';
 function App() {
   return (
     <>
-    <Route path="/" component={ChatPages} exact></Route>
-    <Route path="/chats" component={HomePages}></Route>
+    <div className='App'>
+    <Route path="/" component={HomePages} exact></Route>
+    <Route path="/chats" component={ChatPages}></Route>
+    </div>
 
     </>
   );
