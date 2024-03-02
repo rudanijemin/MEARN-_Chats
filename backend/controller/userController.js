@@ -3,7 +3,7 @@ const User = require("../models/userModels")
 
 const registerUser=async(req,res)=>{
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password,pic } = req.body;
 
         if (!name || !email || !password) {
           res.status(400).json({
@@ -24,6 +24,7 @@ const registerUser=async(req,res)=>{
           name,
           email,
           password,
+          pic
         });
 
         if (user) {
@@ -65,4 +66,16 @@ const authUser = async (req, res) => {
       })
     }
   };
-module.exports = {registerUser,authUser}
+
+const allUsers = async(req,res)=>{
+    const keyWord = req.query.search
+    ? {
+      $or: [
+        { name: { $regex: req.query.search, $options: "i" } },
+        { email: { $regex: req.query.search, $options: "i" } },
+      ],
+    }:{};
+    const users = await User.find(keyWord).find({ _id: { $ne: req.user._id } });
+    res.send(users);
+}
+module.exports = {registerUser,authUser,allUsers}
